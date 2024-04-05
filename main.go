@@ -52,6 +52,7 @@ Extract: tar -x [options] [<patterns>]
   -p    Restore permissions (including ACLs, owner, file flags)
 `
 
+// TODO: add destination -> defaults to "."
 func extractTarFile(_ string, r *tar.Reader, h *tar.Header) error {
 	// targetPath := filepath.Join(dstPath, h.Name)
 	targetPath := ""
@@ -196,6 +197,7 @@ func main() {
 	listFlag := flag.String("t", "", "List file names in archive")
 	createFlag := flag.Bool("c", false, "Create tar from path[s]")
 	extractFlag := flag.String("x", "", "Extract tar to specific path")
+	// TODO: add support for different encoding types. "gzip" already supported
 	// compressFlag := flag.String("u", "", "Compress type (gzip, bz2, etc.)")
 
 	flag.Parse()
@@ -213,7 +215,7 @@ func main() {
 	case *extractFlag != "":
 		err = iterateTarEntries(*extractFlag, "", extractTarFile)
 	default:
-		fmt.Println(usage)
+		fmt.Printf(usage)
 		os.Exit(1)
 	}
 
